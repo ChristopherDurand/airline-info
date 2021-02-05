@@ -8,7 +8,6 @@ const Select = ({
   value,
   onSelect
 }) => {
-  console.log(options);
   const handleSelect = e => {
     e.preventDefault();
     onSelect(e.target.value);
