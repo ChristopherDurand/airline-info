@@ -8,8 +8,13 @@ const Table = ({
   perPage
 }) => {
   const [page, setPage] = useState(1);
-  const maxPages = Math.ceil(columns.length / perPage);
+  const maxPages = Math.ceil(rows.length / perPage);
   const shownRows = rows.slice((page - 1) * perPage, page * perPage);
+  const changePage = delta => e => {
+    e.preventDefault();
+    setPage(page + delta);
+  }
+  
   return (
   <section>
     <table className={className}>
@@ -32,6 +37,14 @@ const Table = ({
     </table>
     <div className='pagination'>
       <p>Showing {(page-1) * perPage + 1}-{page*perPage} of {rows.length} routes.</p>
+      <p>
+        <button disabled={page === 1} onClick={changePage(-1)}>
+          Previous Page
+        </button>
+        <button disabled={page === maxPages} onClick={changePage( 1)}>
+          Next Page
+        </button>
+      </p>
     </div>
    </section>
   )
