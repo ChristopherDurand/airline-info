@@ -30,6 +30,10 @@ const App = () => {
       disabled: airlineFilter !== 'all' && airlineFilter !== String(airline.id),
     };
   });
+  const filteredRoutes = DATA.routes.filter(route => 
+    airlineFilter === 'all' || String(route.airline) === airlineFilter
+  );
+
   return (
     <div className="app">
       <header className="header">
@@ -47,7 +51,7 @@ const App = () => {
       <Table 
         className='routes-table'
         columns={columns} 
-        rows={DATA.routes} 
+        rows={filteredRoutes} 
         format={formatAirlineNames} 
         perPage={25}
       />
