@@ -1,35 +1,35 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
-import Data, {
+import Table from './components/Table';
+import DATA, {
   getAirlineById,
   getAirportByCode,
 } from './data';
 
 const App = () => {
-  const key = route => `${route.airline}${route.src}${route.dest}`
+  const columns = [
+    {name: 'Airline', property: 'airline'},
+    {name: 'Source Airport', property: 'src'},
+    {name: 'Destination Airport', property: 'dest'},
+  ];
+  const formatAirlineNames = (property, value) => {
+    if (property === 'airline') {
+      return getAirlineById(value).name;
+    } else {
+      return getAirportByCode(value).name;
+    }
+  }
+
   return (
     <div className="app">
       <header className="header">
         <h1 className="title">Airline Routes</h1>
       </header>
-      <table className='routes-table'>
-        <thead>
-          <tr>
-            <th>Airline</th>
-            <th>Source</th>
-            <th>Destination</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Data.routes.map(route =>
-            <tr key={key(route)}>
-              <td>{getAirlineById(route.airline)}</td>
-              <td>{getAirportByCode(route.src)}</td>
-              <td>{getAirportByCode(route.dest)}</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <Table 
+        columns={columns} 
+        rows={DATA.routes} 
+        format={formatAirlineNames} 
+      />
     </div>
   )
 };
