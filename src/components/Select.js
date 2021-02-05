@@ -9,9 +9,13 @@ const Select = ({
   onSelect
 }) => {
   console.log(options);
+  const handleSelect = e => {
+    e.preventDefault();
+    onSelect(e.target.value);
+  }
   return (
-    <select onChange={onSelect}>
-      <option value={value}>{allTitle}</option>
+    <select value={value} onChange={handleSelect}>
+      <option value='all'>{allTitle}</option>
       {options.map(option => 
         <option 
           disabled={option.disabled}

@@ -47,29 +47,38 @@ const App = () => {
     }
     return true;
   });
-
+  const bothFiltersOff = () => airportFilter === 'all' && airlineFilter === 'all';
+  const resetFilters = e => {
+    e.preventDefault();
+    setAirlineFilter('all');
+    setAirportFilter('all');
+    
+  }
   return (
     <div className="app">
       <header className="header">
         <h1 className="title">Airline Routes</h1>
       </header>
       <section>
-      <Select 
-        options={filteredAirlines} 
-        valueKey="id"
-        titleKey="name"
-        allTitle="All Airlines" 
-        value="all" 
-        onSelect={e => setAirlineFilter(e.target.value)} 
-      />
-      <Select
-        options={filteredAirports}
-        valueKey="code"
-        titleKey="name"
-        allTitle="All Airports"
-        value="all"
-        onSelect={e => setAirportFilter(e.target.value)}
-      />
+      <p>
+        Show flights from <Select 
+          options={filteredAirlines} 
+          valueKey="id"
+          titleKey="name"
+          allTitle="All Airlines" 
+          value={airlineFilter} 
+          onSelect={setAirlineFilter} 
+        />
+        flying in or out of <Select
+          options={filteredAirports}
+          valueKey="code"
+          titleKey="name"
+          allTitle="All Airports"
+          value={airportFilter}
+          onSelect={setAirportFilter}
+        />
+        <button disabled={bothFiltersOff()} onClick={resetFilters}>Show All Routes</button>
+      </p>
       <Table 
         className='routes-table'
         columns={columns} 
