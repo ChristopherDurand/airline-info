@@ -14,6 +14,8 @@ const Table = ({
     e.preventDefault();
     setPage(page + delta);
   }
+  const lowerBound = (page - 1) * perPage + 1;
+  const upperBound = Math.min(page*perPage, rows.length)
   
   return (
   <>
@@ -36,7 +38,7 @@ const Table = ({
       </tbody>
     </table>
     <div className='pagination'>
-      <p>Showing {(page-1) * perPage + 1}-{page*perPage} of {rows.length} routes.</p>
+      <p>Showing {lowerBound}-{upperBound} of {rows.length} routes.</p>
       <p>
         <button disabled={page === 1} onClick={changePage(-1)}>
           Previous Page
