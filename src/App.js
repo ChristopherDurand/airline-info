@@ -10,6 +10,7 @@ import DATA, {
 
 const App = () => {
   const [airlineFilter, setAirlineFilter] = useState('all')
+  const [airportFilter, setAirportFilter] = useState('all')
   const columns = [
     {name: 'Airline', property: 'airline'},
     {name: 'Source Airport', property: 'src'},
@@ -30,9 +31,22 @@ const App = () => {
       disabled: airlineFilter !== 'all' && airlineFilter !== String(airline.id),
     };
   });
-  const filteredRoutes = DATA.routes.filter(route => 
-    airlineFilter === 'all' || String(route.airline) === airlineFilter
-  );
+  const filteredAirports = DATA.airports.map(airport => {
+    return {
+      ...airport, 
+      disabled: airportFilter !== 'all' && airportFilter !== airport.code,
+    };
+  });
+  
+  const filteredRoutes = DATA.routes.filter(route => {
+    if(airlineFilter !== 'all' && String(route.airline) !== airlineFilter) {
+      return false;
+    }
+    if(airportFilter !== 'all' && route.src !== airportFilter && route.dest !== airportFilter) {
+      return false;
+    }
+    return true;
+  });
 
   return (
     <div className="app">
@@ -47,6 +61,14 @@ const App = () => {
         allTitle="All Airlines" 
         value="all" 
         onSelect={e => setAirlineFilter(e.target.value)} 
+      />
+      <Select
+        options={filteredAirports}
+        valueKey="code"
+        titleKey="name"
+        allTitle="All Airports"
+        value="all"
+        onSelect={e => setAirportFilter(e.target.value)}
       />
       <Table 
         className='routes-table'

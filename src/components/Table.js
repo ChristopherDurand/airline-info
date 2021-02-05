@@ -16,7 +16,7 @@ const Table = ({
   }
   
   return (
-  <section>
+  <>
     <table className={className}>
       <thead>
         <tr>
@@ -41,12 +41,12 @@ const Table = ({
         <button disabled={page === 1} onClick={changePage(-1)}>
           Previous Page
         </button>
-        <button disabled={page === maxPages} onClick={changePage( 1)}>
+        <button disabled={page === maxPages} onClick={changePage(1)}>
           Next Page
         </button>
       </p>
     </div>
-   </section>
+  </>
   )
 }
 export default Table;
