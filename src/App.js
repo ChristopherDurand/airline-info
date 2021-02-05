@@ -12,6 +12,7 @@ import DATA, {
 const App = () => {
   const [airlineFilter, setAirlineFilter] = useState('all')
   const [airportFilter, setAirportFilter] = useState('all')
+
   const columns = [
     {name: 'Airline', property: 'airline'},
     {name: 'Source Airport', property: 'src'},
@@ -26,35 +27,34 @@ const App = () => {
     }
   }
 
+  const filteredRoutes = DATA.routes.filter(route => 
+    (airlineFilter === 'all' || String(route.airline) === airlineFilter) &&
+    (airportFilter === 'all' || route.src === airportFilter || route.dest === airportFilter) 
+  );
+
   const filteredAirlines = DATA.airlines.map(airline => {
+    const disabled = !filteredRoutes.find(route => route.airline === airline.id)
     return {
-      ...airline, 
-      disabled: airlineFilter !== 'all' && airlineFilter !== String(airline.id),
+      ...airline,
+      disabled
     };
   });
+
   const filteredAirports = DATA.airports.map(airport => {
+    const disabled = !filteredRoutes.find(route => airport.code === route.src || airport.code === route.dest)
     return {
-      ...airport, 
-      disabled: airportFilter !== 'all' && airportFilter !== airport.code,
+      ...airport,
+      disabled
     };
   });
   
-  const filteredRoutes = DATA.routes.filter(route => {
-    if(airlineFilter !== 'all' && String(route.airline) !== airlineFilter) {
-      return false;
-    }
-    if(airportFilter !== 'all' && route.src !== airportFilter && route.dest !== airportFilter) {
-      return false;
-    }
-    return true;
-  });
   const bothFiltersOff = () => airportFilter === 'all' && airlineFilter === 'all';
   const resetFilters = e => {
     e.preventDefault();
     setAirlineFilter('all');
     setAirportFilter('all');
-    
   }
+  
   return (
     <div className="app">
       <header className="header">

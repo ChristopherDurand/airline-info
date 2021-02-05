@@ -4,6 +4,7 @@ import DATA from '../data';
 const Map = ({
   routes,
 }) => {
+    // This is to make looking up the latitude and longitude of the airports faster
     const setupAirports = () => {
       const airports = {};
       DATA.airports.forEach(airport => 
